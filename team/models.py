@@ -7,7 +7,6 @@ AVAILABILITIES_STATUS = (
     ('no','Nieobecny'),
     ('yes','Obecny'),
     ('no_decision','Nieodpowiedział'),
-    ('not_sure','Niepewny')
     ) 
 
 # Create your models here.
@@ -16,7 +15,7 @@ class Player(models.Model):
     first_name = models.CharField(max_length=50, blank=True, name="Imię")
     last_name = models.CharField(max_length=50, blank=True, name="Nazwisko")
     email = models.EmailField(max_length=100, blank=True, name="Email")
-    phone_number = models.PositiveIntegerField(name="Numer telefonu")
+    phone_number = models.CharField(max_length=9, name="Numer telefonu", blank=True)
 
 
 class Match(models.Model):
