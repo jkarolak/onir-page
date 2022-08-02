@@ -19,11 +19,11 @@ class Player(models.Model):
 
 
 class Match(models.Model):
-    date = models.DateTimeField(blank=True, name="Data i godzina meczu")
-    enemy_team = models.CharField(blank=True, name="Drużyna przeciwna", max_length=40)
+    date = models.DateTimeField(blank=True, name="Data i godzina meczu", null=True)
+    enemy_team = models.CharField(blank=True, name="Drużyna przeciwna", max_length=40, null=True)
     home = models.BooleanField(default=True, name="Jako gospodarze")
-    our_goals = models.PositiveIntegerField(blank=True, name="My")
-    enemy_goals = models.PositiveIntegerField(blank=True, name="Przeciwnicy")
+    our_goals = models.PositiveIntegerField(blank=True, name="My", null=True)
+    enemy_goals = models.PositiveIntegerField(blank=True, name="Przeciwnicy", null=True)
     is_end = models.BooleanField(default=False, name="Mecz zakończony")
 
 class MatchPlayer(models.Model):
