@@ -21,22 +21,34 @@
                   <th scope="col">Termin</th>
                   <th scope="col">Przeciwnik</th>
                   <th scope="col">Jako gospodarze</th>
-                  <th scope="col">Wynik</th>
                   <th scope="col">Obecność</th>
+                  <th scope="col">Akcje do obecności</th>
                 </tr>
               </thead>
               <tbody>
-                {% for match in MatchPlayer %}
+                {% for matchPlayer in MatchPlayer %}
                 <tr>
                    
-                  <th scope="row">{{match}}</th>
-                  <td>{{match}}</td>
-                  <td>{{match}}</td>
-                  <td>{{match}}</td>
+                  <td>{{matchPlayer.match.date}}</td>
+                  <td>{{matchPlayer.match.enemy_team}}</td>
+                  <td>{{matchPlayer.at_home}}</td>
                   <td>
-                    <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button>
-                    <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button>
-                  <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                    {% if matchPlayer.availability == "yes" %}
+                    Będę
+                    {% elif matchPlayer.availability != "yes" %}
+                    Nii chuja
+                    {% elif matchPlayer.availability != "yes" %}
+                    Brak odpowiedzi
+                    {% endif %}
+                  </td>
+                  <td>
+                  {% if matchPlayer.availability != "yes" %}
+                  <a style="margin:0 2px" href="{% url 'present_button' pk=matchPlayer.pk %}" class="btn btn-success">Będę!</button>
+                  {% endif %}
+
+                  {% if matchPlayer.availability != "no" %}
+                  <a style="margin:0 2px" href="{% url 'absent_button' pk=matchPlayer.pk %}" class="btn btn-danger">Nii chuja!</button>   
+                  {% endif %}
                   </td>
                 </tr>
                 {% endfor %}
@@ -45,6 +57,7 @@
           </div>
         </div>
       </div>
+      <a style="margin:0 2px" href="{% url 'refresh_match_player_button' %}" class="btn btn-info">Odśwież listę meczyków</button>   
 
 </body>
 </html>

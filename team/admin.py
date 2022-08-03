@@ -1,7 +1,6 @@
 from atexit import register
 from django.contrib import admin
 from .models import Player,Match,MatchPlayer
-
 # Register your models here.
 @admin.register(Player)
 class TeamAdmin(admin.ModelAdmin):
@@ -14,3 +13,5 @@ class MatchAdmin(admin.ModelAdmin):
 @admin.register(MatchPlayer)
 class MatchPlayerAdmin(admin.ModelAdmin):
     pass
+
+
