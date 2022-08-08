@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 
+
+DATE_FORMAT = "Y-m-d"
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,6 +29,10 @@ SECRET_KEY = 'django-insecure-v+-ydv%$z8$^8&d9w)&)%2cgd0bvv0($#^a_a=+ugd_v!$7sa7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+LOGIN_REDIRECT_URL = '/team/my_matches/'
+LOGIN_URL='login'
+LOGOUT_URL='logoutt'
+
 ALLOWED_HOSTS = ['jakubkarolak90.pythonanywhere.com',
 '127.0.0.1']
 
@@ -33,13 +40,15 @@ ALLOWED_HOSTS = ['jakubkarolak90.pythonanywhere.com',
 # Application definition
 
 INSTALLED_APPS = [
+    'account.apps.AccountConfig',
+    'team.apps.TeamConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'team.apps.TeamConfig'
+
 ]
 
 MIDDLEWARE = [
@@ -106,9 +115,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pl'
 
-TIME_ZONE = 'Europe/Amsterdam'
+TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
@@ -124,3 +133,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

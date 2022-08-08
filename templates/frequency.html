@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<form class="form-my-matchess" method="post">
+    <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Termin</th>
+                  <th scope="col">Przeciwnik</th>
+                  <th scope="col">Liczba obecnych</th>
+                  <th scope="col">Liczba nieobecnych</th>
+                  <th scope="col">Niezdecydowani</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for match in data %}
+                <tr>
+                   
+                  <td>{{match.date|date:"(l) d-m-Y G:i"}}</td>
+                  <td>{{match.enemy_team}}</td>
+                  <td>
+                    {{match.yes_count}}
+                  </td>
+                  <td>
+                    {{match.no_count}}
+                  </td>
+                  <td>
+                    {{match.no_decision_count}}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <a style="margin:0 2px" href="{% url 'refresh_match_player_button' %}" class="btn btn-info">Odśwież listę meczyków</button>   
+      </form>
+{% endblock %}

@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My matches</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/9dce0a2c76.js" crossorigin="anonymous"></script>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
+<form class="form-my-matchess" method="post">
     <div class="container">
         <div class="row">
           <div class="col-12">
@@ -29,13 +18,19 @@
                 {% for matchPlayer in MatchPlayer %}
                 <tr>
                    
-                  <td>{{matchPlayer.match.date}}</td>
+                  <td>{{matchPlayer.match.date|date:"(l) d-m-Y G:i"}}</td>
                   <td>{{matchPlayer.match.enemy_team}}</td>
-                  <td>{{matchPlayer.at_home}}</td>
+                  <td>
+                    {% if matchPlayer.match.at_home%}
+                    <i class="fa-solid fa-house-user"></i>
+                    {% else %}
+                    <i class="fa-solid fa-plane-departure"></i>
+                    {%endif%}
+                  </td>
                   <td>
                     {% if matchPlayer.availability == "yes" %}
                     Będę
-                    {% elif matchPlayer.availability != "yes" %}
+                    {% elif matchPlayer.availability == "no" %}
                     Nii chuja
                     {% elif matchPlayer.availability != "yes" %}
                     Brak odpowiedzi
@@ -58,6 +53,5 @@
         </div>
       </div>
       <a style="margin:0 2px" href="{% url 'refresh_match_player_button' %}" class="btn btn-info">Odśwież listę meczyków</button>   
-
-</body>
-</html>
+      </form>
+{% endblock %}
