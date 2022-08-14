@@ -39,6 +39,7 @@ class MatchPlayer(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     match = models.ForeignKey(Match,on_delete=models.CASCADE)
     availability = models.CharField(choices=AVAILABILITIES_STATUS, default='no_decision', max_length=20)
+    last_modification_date = models.DateTimeField(auto_now=True, null=True, verbose_name="Data ostatniej modyfikacji", editable=False)
 
 
     @staticmethod
