@@ -13,4 +13,5 @@ class MatchAdmin(admin.ModelAdmin):
 @admin.register(MatchPlayer)
 class MatchPlayerAdmin(admin.ModelAdmin):
     list_display = ('player','match','availability')
+    list_filter = ('availability',)
 
