@@ -32,7 +32,7 @@ LOGIN_REDIRECT_URL = '/team/my_matches/'
 LOGIN_URL='login'
 LOGOUT_URL='logoutt'
 
-ALLOWED_HOSTS = ['jakubkarolak90.pythonanywhere.com',
+ALLOWED_HOSTS = ['onir.pythonanywhere.com',
 '127.0.0.1']
 
 
