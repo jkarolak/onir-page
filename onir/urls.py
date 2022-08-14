@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views, urls
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('team/',include('team.urls')),
@@ -24,4 +25,5 @@ urlpatterns = [
     path('logout', auth_views.LogoutView.as_view(), name="logout"),
     path('password_change/', auth_views.PasswordChangeView.as_view(), name="password_change"),
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(), name="password_change_done"),
+    path('',include('team.urls')),
 ]

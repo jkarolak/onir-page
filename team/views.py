@@ -22,11 +22,11 @@ def frequency(request):
       no_decision_count = 0
       for row in MatchPlayer.objects.all().filter(match=match).values('availability').annotate(total=Count('availability')):
          if row['availability']=='yes':
-            yes_count += 1
+            yes_count = row['total']
          elif row['availability']=='no':
-            no_count += 1
+            no_count = row['total']
          elif row['availability']=='no_decision':
-            no_decision_count += 1
+            no_decision_count = row['total']
 
       print(yes_count,no_count,no_decision_count)
       date_to_return.append({'date':match.date,
