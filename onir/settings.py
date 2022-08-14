@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-v+-ydv%$z8$^8&d9w)&)%2cgd0bvv0($#^a_a=+ugd_v!$7sa7
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 LOGIN_REDIRECT_URL = '/team/my_matches/'
 LOGIN_URL='login'
