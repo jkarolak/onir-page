@@ -11,6 +11,11 @@ AVAILABILITIES_STATUS = (
     ('no_decision','Nieodpowiedział'),
     ) 
 
+PLACES = (
+    ('huba', 'Pod Hubą'),
+    ('sulechowska', 'Sulechowska')
+)
+
 # Create your models here.
 class Player(models.Model):
     user = models.OneToOneField(User, verbose_name="Użytkownik", on_delete=models.CASCADE)
@@ -18,6 +23,7 @@ class Player(models.Model):
     last_name = models.CharField(max_length=50, blank=True, verbose_name="Nazwisko")
     email = models.EmailField(max_length=100, blank=True, verbose_name="Email")
     phone_number = models.CharField(max_length=9, verbose_name="Numer telefonu", blank=True)
+    number = models.PositiveIntegerField(verbose_name="Numer koszulki", unique=True, blank=True, null=True)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -30,6 +36,7 @@ class Match(models.Model):
     our_goals = models.PositiveIntegerField(blank=True, verbose_name="Bramki nasze", null=True)
     enemy_goals = models.PositiveIntegerField(blank=True, verbose_name="Bramki przeciwników", null=True)
     is_end = models.BooleanField(default=False, verbose_name="Mecz zakończony")
+    place = models.CharField(choices=PLACES, default='huba', null=True, blank=True, max_length=30)
 
     def __str__(self):
         return f'{self.date} {self.enemy_team}'

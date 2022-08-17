@@ -10,8 +10,7 @@ from django.db.models import Count
 @login_required
 def my_matches(request):
         get_active_player = Player.objects.get(user=request.user)
-        print(get_active_player)
-        return render(request, 'my_matches.html', {'MatchPlayer':MatchPlayer.objects.all().filter(player=get_active_player)})
+        return render(request, 'my_matches.html', {'MatchPlayer':MatchPlayer.objects.all().filter(player=get_active_player, match__is_end=False), 'MatchPlayerEnded':MatchPlayer.objects.all().filter(player=get_active_player, match__is_end=True)})
 
 @login_required
 def frequency(request):
@@ -28,7 +27,6 @@ def frequency(request):
          elif row['availability']=='no_decision':
             no_decision_count = row['total']
 
-      print(yes_count,no_count,no_decision_count)
       date_to_return.append({'date':match.date,
        'enemy_team':match.enemy_team,
        'is_end':match.is_end,

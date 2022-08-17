@@ -6,9 +6,13 @@
           <div class="col-12">
             <table class="table table-bordered">
               <thead>
+                <br>
+                <h2>Najbliższe mecze</h2>
+                <br>
                 <tr>
                   <th scope="col">Termin</th>
                   <th scope="col">Przeciwnik</th>
+                  <th scope="col">Miejsce</th>
                   <th scope="col">Jako gospodarze</th>
                   <th scope="col">Obecność</th>
                   <th scope="col">Akcje do obecności</th>
@@ -20,6 +24,7 @@
                    
                   <td>{{matchPlayer.match.date|date:"(l) d-m-Y G:i"}}</td>
                   <td>{{matchPlayer.match.enemy_team}}</td>
+                  <td>{{matchPlayer.match.get_place_display}}</td>
                   <td>
                     {% if matchPlayer.match.at_home%}
                     <i class="fa-solid fa-house-user"></i>
@@ -31,7 +36,7 @@
                     {% if matchPlayer.availability == "yes" %}
                     Będę
                     {% elif matchPlayer.availability == "no" %}
-                    Nii chuja
+                    Nie dam rady
                     {% elif matchPlayer.availability != "yes" %}
                     Brak odpowiedzi
                     {% endif %}
@@ -42,8 +47,42 @@
                   {% endif %}
 
                   {% if matchPlayer.availability != "no" %}
-                  <a style="margin:0 2px" href="{% url 'absent_button' pk=matchPlayer.pk %}" class="btn btn-danger">Nii chuja!</button>   
+                  <a style="margin:0 2px" href="{% url 'absent_button' pk=matchPlayer.pk %}" class="btn btn-danger">Nie dam rady!</button>   
                   {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <table class="table table-bordered">
+              <thead>
+                <br>
+                <h2>Rozegrane mecze</h2>
+                <br>
+                <tr>
+                  <th scope="col">Termin</th>
+                  <th scope="col">Przeciwnik</th>
+                  <th scope="col">Miejsce</th>
+                  <th scope="col">Jako gospodarze</th>
+                  <th scope="col">Wynik</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for matchPlayer in MatchPlayerEnded %}
+                <tr>
+                   
+                  <td>{{matchPlayer.match.date|date:"(l) d-m-Y G:i"}}</td>
+                  <td>{{matchPlayer.match.enemy_team}}</td>
+                  <td>{{matchPlayer.match.get_place_display}}</td>
+                  <td>
+                    {% if matchPlayer.match.at_home%}
+                    <i class="fa-solid fa-house-user"></i>
+                    {% else %}
+                    <i class="fa-solid fa-plane-departure"></i>
+                    {%endif%}
+                  </td>
+                  <td>
+                    {{matchPlayer.match.our_goals}}:{{matchPlayer.match.enemy_goals}}
                   </td>
                 </tr>
                 {% endfor %}
