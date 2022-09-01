@@ -1,8 +1,10 @@
 from tkinter import CASCADE
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import (post_save)
+from django.db.models.signals import (post_save, m2m_changed)
 from django.dispatch import receiver
+from smsapi.client import SmsApiPlClient
+from django.conf import settings
 
 
 AVAILABILITIES_STATUS = (
@@ -56,6 +58,39 @@ class MatchPlayer(models.Model):
                 if MatchPlayer.objects.filter(player=player, match=match).count()==0:
                     MatchPlayer.objects.create(player=player, match=match)
 
+def sentSmsAPI(to, message):
+    token = settings.SMS_API_TOKEN
+
+    client = SmsApiPlClient(access_token=token)
+    send_results = client.sms.send(to=to, message=message,  from_="ONIR TEAM", encoding="utf-8", skip_foreign=1,normalize=1)
+
+    for result in send_results:
+        print(result.id, result.points, result.error)
+
+class Sms(models.Model):
+    players = models.ManyToManyField(Player, verbose_name="Adresaci")
+    content = models.CharField(max_length=160)
+    phone_numbers = models.TextField(null=True, verbose_name="Numery adresatów")
+    request = models.TextField(null=True, verbose_name="request")
+    response = models.TextField(null=True, verbose_name="response")
+    sent = models.BooleanField(default=False)
+
+
+@receiver(m2m_changed,sender=Sms.players.through)
+def sentSms(sender, instance,action, **kwargs):
+    if not instance.sent and action=="post_add":
+        phone_numbers = []
+        for player in instance.players.all():
+            if player.phone_number:
+                phone_numbers.append(player.phone_number)
+        if phone_numbers:
+            to = ",".join(phone_numbers)
+            message = instance.content
+            sentSmsAPI(to, message)
+
+            
+        #instance.sent = True
+       #instance.save()
 
 @receiver(post_save,sender=Match)
 def refresh_match_player_list(*args,**kwargs):

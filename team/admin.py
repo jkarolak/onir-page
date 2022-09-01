@@ -1,6 +1,6 @@
 from atexit import register
 from django.contrib import admin
-from .models import Player,Match,MatchPlayer
+from .models import Player,Match,MatchPlayer, Sms
 # Register your models here.
 @admin.register(Player)
 class PlayerAdmin(admin.ModelAdmin):
@@ -15,5 +15,8 @@ class MatchAdmin(admin.ModelAdmin):
 @admin.register(MatchPlayer)
 class MatchPlayerAdmin(admin.ModelAdmin):
     list_display = ('player','match','availability', 'last_modification_date')
-    list_filter = ('availability',)
+    list_filter = ('availability','match',)
 
+@admin.register(Sms)
+class SmsAdmin(admin.ModelAdmin):
+    list_display = ('content', 'phone_numbers','request','response','sent')

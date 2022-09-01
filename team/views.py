@@ -15,7 +15,7 @@ def my_matches(request):
 @login_required
 def frequency(request):
    date_to_return = []
-   for match in Match.objects.order_by("date"):
+   for match in Match.objects.order_by("-is_end", "date"):
       yes_count = 0
       no_count = 0
       no_decision_count = 0
