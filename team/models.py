@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import (post_save, m2m_changed)
 from django.dispatch import receiver
-from smsapi.client import SmsApiPlClient
+#from smsapi.client import SmsApiPlClient
 from django.conf import settings
 
 
@@ -59,6 +59,8 @@ class MatchPlayer(models.Model):
                     MatchPlayer.objects.create(player=player, match=match)
 
 def sentSmsAPI(to, message):
+    pass
+    """
     token = settings.SMS_API_TOKEN
 
     client = SmsApiPlClient(access_token=token)
@@ -66,6 +68,7 @@ def sentSmsAPI(to, message):
 
     for result in send_results:
         print(result.id, result.points, result.error)
+    """
 
 class Sms(models.Model):
     players = models.ManyToManyField(Player, verbose_name="Adresaci")
