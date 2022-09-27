@@ -1,4 +1,3 @@
-from tkinter import CASCADE
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import (post_save, m2m_changed)
@@ -78,7 +77,7 @@ class Sms(models.Model):
     response = models.TextField(null=True, verbose_name="response")
     sent = models.BooleanField(default=False)
 
-
+"""
 @receiver(m2m_changed,sender=Sms.players.through)
 def sentSms(sender, instance,action, **kwargs):
     if not instance.sent and action=="post_add":
@@ -93,7 +92,7 @@ def sentSms(sender, instance,action, **kwargs):
 
             
         #instance.sent = True
-       #instance.save()
+"""       #instance.save()
 
 @receiver(post_save,sender=Match)
 def refresh_match_player_list(*args,**kwargs):
