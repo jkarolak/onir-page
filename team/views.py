@@ -10,7 +10,9 @@ from django.db.models import Count
 @login_required
 def my_matches(request):
         get_active_player = Player.objects.get(user=request.user)
-        return render(request, 'my_matches.html', {'MatchPlayer':MatchPlayer.objects.all().filter(player=get_active_player, match__is_end=False).order_by('match__date'), 'MatchPlayerEnded':MatchPlayer.objects.all().filter(player=get_active_player, match__is_end=True)})
+        return render(request, 'my_matches.html', {
+         'MatchPlayer':MatchPlayer.objects.all().filter(player=get_active_player, match__is_end=False).order_by('match__date'),
+         'MatchPlayerEnded':MatchPlayer.objects.all().filter(player=get_active_player, match__is_end=True).order_by('match__date')})
 
 @login_required
 def frequency(request):
