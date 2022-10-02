@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import (post_save, m2m_changed)
 from django.dispatch import receiver
-#from smsapi.client import SmsApiPlClient
+from smsapi.client import SmsApiPlClient
 from django.conf import settings
 
 
@@ -59,7 +59,7 @@ class MatchPlayer(models.Model):
 
 def sentSmsAPI(to, message):
     pass
-    """
+    
     token = settings.SMS_API_TOKEN
 
     client = SmsApiPlClient(access_token=token)
@@ -67,17 +67,17 @@ def sentSmsAPI(to, message):
 
     for result in send_results:
         print(result.id, result.points, result.error)
-    """
+    
 
 class Sms(models.Model):
     players = models.ManyToManyField(Player, verbose_name="Adresaci")
     content = models.CharField(max_length=160)
-    phone_numbers = models.TextField(null=True, verbose_name="Numery adresatów")
-    request = models.TextField(null=True, verbose_name="request")
-    response = models.TextField(null=True, verbose_name="response")
+    phone_numbers = models.TextField(null=True, blank=True, verbose_name="Numery adresatów")
+    request = models.TextField(null=True, blank=True, verbose_name="request")
+    response = models.TextField(null=True, blank=True, verbose_name="response")
     sent = models.BooleanField(default=False)
 
-"""
+
 @receiver(m2m_changed,sender=Sms.players.through)
 def sentSms(sender, instance,action, **kwargs):
     if not instance.sent and action=="post_add":
@@ -89,10 +89,8 @@ def sentSms(sender, instance,action, **kwargs):
             to = ",".join(phone_numbers)
             message = instance.content
             sentSmsAPI(to, message)
-
-            
-        #instance.sent = True
-"""       #instance.save()
+            instance.sent = True
+            instance.save()
 
 @receiver(post_save,sender=Match)
 def refresh_match_player_list(*args,**kwargs):
