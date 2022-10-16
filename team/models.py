@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import (post_save, m2m_changed)
+from django.db.models.signals import (post_save, m2m_changed, pre_save)
 from django.dispatch import receiver
-from smsapi.client import SmsApiPlClient
+#from smsapi.client import SmsApiPlClient
 from django.conf import settings
+from django.core.mail import send_mail
 
 
 AVAILABILITIES_STATUS = (
@@ -60,13 +61,13 @@ class MatchPlayer(models.Model):
 def sentSmsAPI(to, message):
     pass
     
-    token = settings.SMS_API_TOKEN
+    #token = settings.SMS_API_TOKEN
 
-    client = SmsApiPlClient(access_token=token)
-    send_results = client.sms.send(to=to, message=message,  from_="ONIR TEAM", encoding="utf-8", skip_foreign=1,normalize=1)
+    #client = SmsApiPlClient(access_token=token)
+    #send_results = client.sms.send(to=to, message=message,  from_="ONIR TEAM", encoding="utf-8", skip_foreign=1,normalize=1)
 
-    for result in send_results:
-        print(result.id, result.points, result.error)
+    #for result in send_results:
+     #   print(result.id, result.points, result.error)
     
 
 class Sms(models.Model):
@@ -99,3 +100,12 @@ def refresh_match_player_list(*args,**kwargs):
 @receiver(post_save,sender=Player)
 def refresh_match_player_list(*args,**kwargs):
     MatchPlayer.refreshMatchPlayer()
+
+@receiver(pre_save,sender=MatchPlayer)
+def send_email(sender, instance,update_fields, *arg, **kwargs):
+    if instance.id is not None:
+        previous_instance = MatchPlayer.objects.get(id=instance.id)
+        if previous_instance.availability != instance.availability:
+            content = instance.player.first_name + " " + instance.player.last_name + " zmienił status obecności na " + instance.get_availability_display() + " w meczu przeciwko " + instance.match.enemy_team + " w dniu " + str(instance.match.date.date()) + "."
+            send_mail('Onir Team - Aktualizacja statusu meczu', content, 'onir.team@gmail.com',['jakub.karolak90@gmail.com', 'jablonski.krzysztof2@gmail.com'])
+        
