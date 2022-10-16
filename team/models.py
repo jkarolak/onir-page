@@ -107,5 +107,5 @@ def send_email(sender, instance,update_fields, *arg, **kwargs):
         previous_instance = MatchPlayer.objects.get(id=instance.id)
         if previous_instance.availability != instance.availability:
             content = instance.player.first_name + " " + instance.player.last_name + " zmienił status obecności na " + instance.get_availability_display() + " w meczu przeciwko " + instance.match.enemy_team + " w dniu " + str(instance.match.date.date()) + "."
-            send_mail('Onir Team - Aktualizacja statusu meczu', content, 'onir.team@gmail.com',['jakub.karolak90@gmail.com', 'jablonski.krzysztof2@gmail.com'])
+            send_mail('Onir Team - Aktualizacja statusu meczu', content, 'onir.team@gmail.com',['jakub.karolak90@gmail.com', 'jablonski.krzysztof2@gmail.com'], fail_silently=True)
         
