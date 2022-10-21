@@ -47,6 +47,9 @@ def training_vote(request):
    get_active_player = Player.objects.get(user=request.user)
    date_to_return = []
    training_days_names = []
+   accept_days_to_trening = ""
+   if get_active_player.training_vote:
+      accept_days_to_trening = get_active_player.training_vote.split(" ")
    return render(request, 'training_vote.html', {
       'days_list':[str(i) for i in range(1,8)],
       'hour_list':[str(i) for i in range(9,22)],
