@@ -53,7 +53,7 @@ def training_vote(request):
    return render(request, 'training_vote.html', {
       'days_list':[str(i) for i in range(1,8)],
       'hour_list':[str(i) for i in range(9,22)],
-      'accept_days':get_active_player.training_vote.split(" ")
+      'accept_days':accept_days_to_trening
       }
       )
 
