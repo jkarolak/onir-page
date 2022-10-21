@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<form class="form-my-training-votes" method="post">
+  {% csrf_token %}
+    <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Godzina</th>
+                  <th scope="col">Poniedziałek</th>
+                  <th scope="col">Wtorek</th>
+                  <th scope="col">Środa</th>
+                  <th scope="col">Czwartek</th>
+                  <th scope="col">Piątek</th>
+                  <th scope="col">Sobota</th>
+                  <th scope="col">Niedziela</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for hour in hour_list %}
+                <tr>
+                  <th scope="col">{{hour}}</th>
+                  {% for day in days_list %}
+                  <td>
+                    {% with day|add:'_'|add:hour as day_hour %}
+                    {% if day_hour in accept_days %}
+                    <input type="checkbox" id="{{day}}_{{hour}}" data-toggle="toggle" data-onstyle="outline-danger" data-offstyle="outline-success"  data-off="Ok" data-on="Zajęty"/>
+                    {% else %}
+                    <input type="checkbox" id="{{day}}_{{hour}}" data-toggle="toggle" data-offstyle="outline-danger" data-onstyle="outline-success" data-off="Zajęty" data-on="Ok" />
+                    {% endif %}
+                    {% endwith%}
+                  </td>
+                  {%endfor%}
+                </tr>
+                {%endfor%}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div> 
+      <script> 
+        function sentVote() {
+            let query = document.querySelectorAll(".btn-outline-success input")
+            let str = ""
+            for (i=0; i<query.length; ++i){
+              str = str + " " + query[i].id
+            }
+            if (str==""){
+              window.location = window.location + "save_training_days/" + "nothing"
+            }
+            else{
+              window.location = window.location + "save_training_days/" + str
+            }
+            
+        }
+      </script>
+      <a style="margin:0 2px" onclick="sentVote()" class="btn btn-danger">Zatwierdź</a>
+      </form>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'index.js' %}"></script>
+{% endblock %}

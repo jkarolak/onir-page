@@ -10,6 +10,8 @@ urlpatterns = [
     path('absent_button/<int:pk>/', views.absent_button, name="absent_button"),
     path('refresh_match_player_button/', views.refreshMatchPlayer, name="refresh_match_player_button"),
     path('frequency/', views.frequency, name="frequency"),
+    path('training_vote/', views.training_vote, name="frequency"),
+    path('training_vote/save_training_days/<str:values>/', views.saveTrainingDaysButton, name="save_training_days"),
 
 
 ]

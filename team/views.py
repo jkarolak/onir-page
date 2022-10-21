@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, request, response,HttpResponseRedirect
-from .models import MatchPlayer, Match, Player
+from .models import MatchPlayer, Match, Player,TrainingDate,TrainingDatePlayer
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Count
 
 # Create your views here.
+
+
+
 @login_required
 def my_matches(request):
         get_active_player = Player.objects.get(user=request.user)
@@ -39,6 +42,18 @@ def frequency(request):
    
    return render(request, 'frequency.html', {'data':date_to_return})
 
+@login_required
+def training_vote(request):
+   get_active_player = Player.objects.get(user=request.user)
+   date_to_return = []
+   training_days_names = []
+   return render(request, 'training_vote.html', {
+      'days_list':[str(i) for i in range(1,8)],
+      'hour_list':[str(i) for i in range(9,22)],
+      'accept_days':get_active_player.training_vote.split(" ")
+      }
+      )
+
 def present_button(request, pk):
    matchPlayer = MatchPlayer.objects.get(id=pk)
    matchPlayer.availability='yes'
@@ -54,3 +69,9 @@ def absent_button(request, pk):
 def refreshMatchPlayer(request):
     MatchPlayer.refreshMatchPlayer()
     return redirect('../my_matches/')
+
+def saveTrainingDaysButton(request,values):
+   get_active_player = Player.objects.get(user=request.user)
+   get_active_player.training_vote = values
+   get_active_player.save()
+   return redirect('../../')

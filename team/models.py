@@ -17,6 +17,16 @@ PLACES = (
     ('huba', 'Pod Hubą'),
     ('sulechowska', 'Sulechowska')
 )
+WEEK_DAYS = (
+    ('Poniedziałek','Poniedziałek'),
+    ('Wtore','Wtorek'),
+    ('Środa','Środa'),
+    ('Czwartek','Czwartek'),
+    ('Piątek','Piątek'),
+    ('Sobota','Sobota'),
+    ('Niedziela','Niedziela'),
+
+)
 
 # Create your models here.
 class Player(models.Model):
@@ -26,6 +36,7 @@ class Player(models.Model):
     email = models.EmailField(max_length=100, blank=True, verbose_name="Email")
     phone_number = models.CharField(max_length=9, verbose_name="Numer telefonu", blank=True)
     number = models.PositiveIntegerField(verbose_name="Numer koszulki", unique=True, blank=True, null=True)
+    training_vote = models.CharField(verbose_name="Głosowanie na treningi - techniczne pole", blank=True, null=True, max_length=4000)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -109,3 +120,11 @@ def send_email(sender, instance,update_fields, *arg, **kwargs):
             content = instance.player.first_name + " " + instance.player.last_name + " zmienił status obecności na " + instance.get_availability_display() + " w meczu przeciwko " + instance.match.enemy_team + " w dniu " + str(instance.match.date.date()) + "."
             send_mail('Onir Team - Aktualizacja statusu meczu', content, 'onir.team@gmail.com',['jakub.karolak90@gmail.com', 'jablonski.krzysztof2@gmail.com'], fail_silently=True)
         
+
+class TrainingDate(models.Model):
+    weekday = models.CharField(choices=WEEK_DAYS, max_length=20)
+    hour = models.IntegerField(verbose_name="Godzina")
+
+class TrainingDatePlayer(models.Model):
+    player = models.ForeignKey(Player,on_delete=models.CASCADE)
+    trainingDate = models.ForeignKey(TrainingDate,on_delete=models.CASCADE)

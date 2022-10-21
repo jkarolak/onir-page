@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Player,Match,MatchPlayer, Sms
+from .models import Player,Match,MatchPlayer, Sms, TrainingDate
 # Register your models here.
 @admin.register(Player)
 class PlayerAdmin(admin.ModelAdmin):
@@ -19,3 +19,7 @@ class MatchPlayerAdmin(admin.ModelAdmin):
 @admin.register(Sms)
 class SmsAdmin(admin.ModelAdmin):
     list_display = ('content', 'phone_numbers','request','response','sent')
+
+@admin.register(TrainingDate)
+class TrainingDateAdmin(admin.ModelAdmin):
+    pass
